@@ -1,6 +1,7 @@
 module.exports = {
 	components: 'src/components/**/[A-Z]*.js',
 	defaultExample: true,
+	showHtml: true,
 	webpackConfig: {
 		module: {
 			rules: [

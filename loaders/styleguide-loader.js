@@ -17,6 +17,7 @@ const CLIENT_CONFIG_OPTIONS = [
 	'title',
 	'highlightTheme',
 	'showCode',
+	'showHtml',
 	'showUsage',
 	'showSidebar',
 	'previewDelay',

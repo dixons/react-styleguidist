@@ -88,8 +88,7 @@ export default class Playground extends Component {
 					<Slot
 						name="exampleTabs"
 						active={activeTab}
-						onlyActive
-						props={{ code, onChange: this.handleChange }}
+						props={{ code, evalInContext, onChange: this.handleChange }}
 					/>
 				}
 				toolbar={

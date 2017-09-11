@@ -144,6 +144,10 @@ module.exports = {
 		type: 'boolean',
 		default: false,
 	},
+	showHtml: {
+		type: 'boolean',
+		default: false,
+	},
 	showUsage: {
 		type: 'boolean',
 		default: false,
