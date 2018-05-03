@@ -4,6 +4,7 @@ exports[`should ignore items without name 1`] = `
 <ul>
   <li
     className=""
+    key="#button"
   >
     <Styled(Link)
       className=""
@@ -19,6 +20,7 @@ exports[`should render sections with nested components 1`] = `
 <ul>
   <li
     className=""
+    key="#button"
   >
     <Styled(Link)
       className=""
@@ -29,6 +31,7 @@ exports[`should render sections with nested components 1`] = `
   </li>
   <li
     className=""
+    key="#input"
   >
     <Styled(Link)
       className=""
@@ -38,4 +41,44 @@ exports[`should render sections with nested components 1`] = `
     </Styled(Link)>
   </li>
 </ul>
+`;
+
+exports[`should set the correct href for items 1`] = `
+<Styled(ComponentsList)
+  classes={Object {}}
+  items={
+    Array [
+      Object {
+        "href": "blank#button",
+        "name": "Button",
+        "slug": "button",
+      },
+      Object {
+        "href": "blank#input",
+        "name": "Input",
+        "slug": "input",
+      },
+    ]
+  }
+/>
+`;
+
+exports[`should set the correct href for items when isolated links should be used 1`] = `
+<Styled(ComponentsList)
+  classes={Object {}}
+  items={
+    Array [
+      Object {
+        "href": "blank#!/Button",
+        "name": "Button",
+        "slug": "button",
+      },
+      Object {
+        "href": "blank#!/Input",
+        "name": "Input",
+        "slug": "input",
+      },
+    ]
+  }
+/>
 `;

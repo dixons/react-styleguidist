@@ -3,7 +3,7 @@
 exports[`ReactComponent should pass rendered description, usage, examples, etc. to the renderer 1`] = `
 <Styled(ReactComponent)
   description={
-    <Styled(Markdown)
+    <Markdown
       text="Bar"
     />
   }
@@ -13,7 +13,11 @@ exports[`ReactComponent should pass rendered description, usage, examples, etc. 
       examples={
         Array [
           Object {
-            "content": "<button>OK</button>",
+            "content": 
+<button>
+  OK
+</button>
+,
             "evalInContext": [Function],
             "type": "code",
           },
@@ -34,7 +38,7 @@ exports[`ReactComponent should pass rendered description, usage, examples, etc. 
       slotName="componentToolbar"
       slotProps={
         Object {
-          "isolated": undefined,
+          "isolated": false,
           "metadata": Object {
             "tags": Array [
               "one",
@@ -47,7 +51,11 @@ exports[`ReactComponent should pass rendered description, usage, examples, etc. 
             "description": "Bar",
             "examples": Array [
               Object {
-                "content": "<button>OK</button>",
+                "content": 
+<button>
+  OK
+</button>
+,
                 "evalInContext": [Function],
                 "type": "code",
               },
@@ -85,6 +93,7 @@ exports[`ReactComponent should pass rendered description, usage, examples, etc. 
   slug="foo"
   tabBody={
     <Slot
+      active={undefined}
       name="docsTabs"
       onlyActive={true}
       props={
@@ -101,7 +110,11 @@ exports[`ReactComponent should pass rendered description, usage, examples, etc. 
             "description": "Bar",
             "examples": Array [
               Object {
-                "content": "<button>OK</button>",
+                "content": 
+<button>
+  OK
+</button>
+,
                 "evalInContext": [Function],
                 "type": "code",
               },
@@ -134,6 +147,7 @@ exports[`ReactComponent should pass rendered description, usage, examples, etc. 
   }
   tabButtons={
     <Slot
+      active={undefined}
       name="docsTabButtons"
       props={
         Object {
@@ -150,7 +164,11 @@ exports[`ReactComponent should pass rendered description, usage, examples, etc. 
             "description": "Bar",
             "examples": Array [
               Object {
-                "content": "<button>OK</button>",
+                "content": 
+<button>
+  OK
+</button>
+,
                 "evalInContext": [Function],
                 "type": "code",
               },
@@ -263,10 +281,14 @@ exports[`ReactComponentRenderer should render examples 1`] = `
       components/test
     </Styled(Pathline)>
   </header>
-  <div>
+  <div
+    key="1"
+  >
     example 1
   </div>
-  <div>
+  <div
+    key="2"
+  >
     example 2
   </div>
 </div>

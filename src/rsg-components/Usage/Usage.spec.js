@@ -1,13 +1,14 @@
 import React from 'react';
 import Usage from './Usage';
 
-const props = {
-	children: {
+const props = [
+	{
+		name: 'children',
 		type: { name: 'string' },
 		required: true,
 		description: 'Button label.',
 	},
-};
+];
 const methods = [
 	{
 		name: 'set',
@@ -39,6 +40,6 @@ describe('Usage', () => {
 	it('should render nothing without props and methods', () => {
 		const actual = shallow(<Usage props={{}} />);
 
-		expect(actual.node).toBe(null);
+		expect(actual.getElement()).toBe(null);
 	});
 });

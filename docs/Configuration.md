@@ -2,6 +2,53 @@
 
 By default, Styleguidist will look for `styleguide.config.js` file in your project’s root folder. You can change the location of the config file using `--config` [CLI](CLI.md) option.
 
+<!-- To update run: npx markdown-toc --maxdepth 4 -i docs/Configuration.md -->
+
+<!-- toc -->
+
+* [`assetsDir`](#assetsdir)
+* [`compilerConfig`](#compilerconfig)
+* [`components`](#components)
+* [`context`](#context)
+* [`contextDependencies`](#contextdependencies)
+* [`configureServer`](#configureserver)
+* [`dangerouslyUpdateWebpackConfig`](#dangerouslyupdatewebpackconfig)
+* [`defaultExample`](#defaultexample)
+* [`editorConfig`](#editorconfig)
+* [`getComponentPathLine`](#getcomponentpathline)
+* [`getExampleFilename`](#getexamplefilename)
+* [`handlers`](#handlers)
+* [`ignore`](#ignore)
+* [`logger`](#logger)
+* [`pagePerSection`](#pagepersection)
+* [`printBuildInstructions`](#printbuildinstructions)
+* [`printServerInstructions`](#printserverinstructions)
+* [`previewDelay`](#previewdelay)
+* [`propsParser`](#propsparser)
+* [`require`](#require)
+* [`resolver`](#resolver)
+* [`ribbon`](#ribbon)
+* [`sections`](#sections)
+* [`serverHost`](#serverhost)
+* [`serverPort`](#serverport)
+* [`showCode`](#showcode)
+* [`showUsage`](#showusage)
+* [`showSidebar`](#showsidebar)
+* [`skipComponentsWithoutExample`](#skipcomponentswithoutexample)
+* [`sortProps`](#sortprops)
+* [`styleguideComponents`](#styleguidecomponents)
+* [`styleguideDir`](#styleguidedir)
+* [`styles`](#styles)
+* [`template`](#template)
+* [`theme`](#theme)
+* [`title`](#title)
+* [`updateDocs`](#updatedocs)
+* [`updateExample`](#updateexample)
+* [`verbose`](#verbose)
+* [`webpackConfig`](#webpackconfig)
+
+<!-- tocstop -->
+
 #### `assetsDir`
 
 Type: `String`, optional
@@ -16,10 +63,11 @@ Styleguidist uses [Bublé](https://buble.surge.sh/guide/) to run ES6 code on the
 
 #### `components`
 
-Type: `String` or `Function`, default: `src/components/**/*.{js,jsx}`
+Type: `String`, `Function` or `Array`, default: `src/components/**/*.{js,jsx,ts,tsx}`
 
-- when `String`: a [glob pattern](https://github.com/isaacs/node-glob#glob-primer) that matches all your component modules.
-- when `Function`: a function that returns an array of module paths.
+* when `String`: a [glob pattern](https://github.com/isaacs/node-glob#glob-primer) that matches all your component modules.
+* when `Function`: a function that returns an array of module paths.
+* when `Array`: an array of module paths.
 
 All paths are relative to config folder.
 
@@ -37,7 +85,7 @@ module.exports = {
     map: 'lodash/map',
     users: path.resolve(__dirname, 'fixtures/users')
   }
-};
+}
 ```
 
 Then you can use them in any example:
@@ -56,9 +104,7 @@ By default Styleguidist uses common parent directory of your components.
 
 ```javascript
 module.exports = {
-  contextDependencies: [
-    path.resolve(__dirname, 'lib/components')
-  ]
+  contextDependencies: [path.resolve(__dirname, 'lib/components')]
 }
 ```
 
@@ -71,12 +117,12 @@ Function that allows you to add endpoints to the underlying Express server:
 ```javascript
 module.exports = {
   configureServer(app) {
-     // `app` is the instance of the express server running Styleguidist
+    // `app` is the instance of the express server running Styleguidist
     app.get('/custom-endpoint', (req, res) => {
-      res.status(200).send({ response: 'Server invoked' });
-    });
+      res.status(200).send({ response: 'Server invoked' })
+    })
   }
-};
+}
 ```
 
 Your components will be able to invoke the URL `http://localhost:6060/custom-endpoint` from their examples.
@@ -93,13 +139,13 @@ Allows you to modify webpack config without any restrictions.
 module.exports = {
   dangerouslyUpdateWebpackConfig(webpackConfig, env) {
     // WARNING: inspect Styleguidist Webpack config before modifying it, otherwise you may break Styleguidist
-    console.log(webpackConfig);
+    console.log(webpackConfig)
     webpackConfig.externals = {
-        jquery: 'jQuery'
-    };
-    return webpackConfig;
+      jquery: 'jQuery'
+    }
+    return webpackConfig
   }
-};
+}
 ```
 
 #### `defaultExample`
@@ -119,15 +165,21 @@ Function that returns a component path line (displayed under the component name)
 For example, instead of `components/Button/Button.js` you can print `import Button from 'components/Button';`:
 
 ```javascript
-const path = require('path');
+const path = require('path')
 module.exports = {
   getComponentPathLine(componentPath) {
-    const name = path.basename(componentPath, '.js');
-    const dir = path.dirname(componentPath);
-    return `import ${name} from '${dir}';`;
+    const name = path.basename(componentPath, '.js')
+    const dir = path.dirname(componentPath)
+    return `import ${name} from '${dir}';`
   }
-};
+}
 ```
+
+#### `editorConfig`
+
+Type: `Object`, default: [scripts/schemas/config.js](https://github.com/styleguidist/react-styleguidist/tree/master/scripts/schemas/config.js#L101)
+
+Source code editor options, see [CodeMirror docs](https://codemirror.net/doc/manual.html#config) for all available options.
 
 #### `getExampleFilename`
 
@@ -140,9 +192,9 @@ For example, instead of `Readme.md` you can use `ComponentName.examples.md`:
 ```javascript
 module.exports = {
   getExampleFilename(componentPath) {
-    return componentPath.replace(/\.jsx?$/, '.examples.md');
+    return componentPath.replace(/\.jsx?$/, '.examples.md')
   }
-};
+}
 ```
 
 #### `handlers`
@@ -151,45 +203,50 @@ Type: `Function`, optional, default: [[react-docgen-displayname-handler](https:/
 
 Function that returns functions used to process the discovered components and generate documentation objects. Default behaviors include discovering component documentation blocks, prop types, and defaults. If setting this property, it is best to build from the default [react-docgen](https://github.com/reactjs/react-docgen) handler list, such as in the example below. See the [react-docgen handler documentation](https://github.com/reactjs/react-docgen#handlers) for more information about handlers.
 
-Also note that the default handler, `react-docgen-displayname-handler` should be included to better support higher order components.
+> **Note:** `react-docgen-displayname-handler` should be included.
 
 ```javascript
 module.exports = {
-  handlers: componentPath => require('react-docgen').defaultHandlers.concat(
-    (documentation, path) => {
-      // Calculate a display name for components based upon the declared class name.
-      if (path.value.type === 'ClassDeclaration' && path.value.id.type === 'Identifier') {
-        documentation.set('displayName', path.value.id.name);
+  handlers: componentPath =>
+    require('react-docgen').defaultHandlers.concat(
+      (documentation, path) => {
+        // Calculate a display name for components based upon the declared class name.
+        if (
+          path.value.type === 'ClassDeclaration' &&
+          path.value.id.type === 'Identifier'
+        ) {
+          documentation.set('displayName', path.value.id.name)
 
-        // Calculate the key required to find the component in the module exports
-        if (path.parentPath.value.type === 'ExportNamedDeclaration') {
-          documentation.set('path', path.value.id.name);
+          // Calculate the key required to find the component in the module exports
+          if (
+            path.parentPath.value.type === 'ExportNamedDeclaration'
+          ) {
+            documentation.set('path', path.value.id.name)
+          }
         }
-      }
 
-      // The component is the default export
-      if (path.parentPath.value.type === 'ExportDefaultDeclaration') {
-        documentation.set('path', 'default');
-      }
-    },
+        // The component is the default export
+        if (
+          path.parentPath.value.type === 'ExportDefaultDeclaration'
+        ) {
+          documentation.set('path', 'default')
+        }
+      },
 
-    // To better support higher order components
-    require('react-docgen-displayname-handler').createDisplayNameHandler(componentPath),
-  )
-};
+      require('react-docgen-displayname-handler').createDisplayNameHandler(
+        componentPath
+      )
+    )
+}
 ```
-
-#### `highlightTheme`
-
-Type: `String`, default: `base16-light`
-
-[CodeMirror theme](http://codemirror.net/demo/theme.html) name to use for syntax highlighting in the editor.
 
 #### `ignore`
 
-Type: `String[]`, default: `['**/__tests__/**', '**/*.test.js', '**/*.test.jsx', '**/*.spec.js', '**/*.spec.jsx']`
+Type: `String[]`, default: `['**/__tests__/**', '**/*.test.{js,jsx,ts,tsx}', '**/*.spec.{js,jsx,ts,tsx}', '**/*.d.ts']`
 
-Array of [glob pattern](https://github.com/isaacs/node-glob#glob-primer) or files of components that should not be included in the style guide.
+Array of [glob pattern](https://github.com/isaacs/node-glob#glob-primer) that should not be included in the style guide.
+
+> **Note:** You should pass glob patterns, for example, use `**/components/Button.js` instead of `components/Button.js`.
 
 #### `logger`
 
@@ -199,14 +256,63 @@ Custom logger functions:
 
 ```javascript
 module.exports = {
-	logger: {
+  logger: {
     // One of: info, debug, warn
     // Suppress messages
-		info: () => {},
+    info: () => {},
     // Override display function
-		warn: message => console.warn(`NOOOOOO: ${message}`),
-	},
-};
+    warn: message => console.warn(`NOOOOOO: ${message}`)
+  }
+}
+```
+
+#### `pagePerSection`
+
+Type: `Boolean`, default: `false`
+
+Render one section or component per page, starting with the first.
+
+If set to `true`, the sidebar will be visible on each page, except for the examples.
+
+The value may be differ on each environment.
+
+```javascript
+module.exports = {
+  pagePerSection: process.env.NODE_ENV !== 'production'
+}
+```
+
+#### `printBuildInstructions`
+
+Type: `Function`, optional
+
+Function that allows you to override the printing of build messages to console.log.
+
+```javascript
+module.exports = {
+  printBuildInstructions(config) {
+    console.log(
+      `Style guide published to ${
+        config.styleguideDir
+      }. Something else interesting.`
+    )
+  }
+}
+```
+
+#### `printServerInstructions`
+
+Type: `Function`, optional
+
+Function that allows you to override the printing of local dev server messages to console.log.
+
+```javascript
+module.exports = {
+  serverHost: 'your-domain',
+  printServerInstructions(config, { isHttps }) {
+    console.log(`Local style guide: http://${config.serverHost}`)
+  }
+}
 ```
 
 #### `previewDelay`
@@ -224,9 +330,9 @@ Function that allows you to override the mechanism used to parse props from a so
 ```javascript
 module.exports = {
   propsParser(filePath, source, resolver, handlers) {
-    return require('react-docgen').parse(source, resolver, handlers);
+    return require('react-docgen').parse(source, resolver, handlers)
   }
-};
+}
 ```
 
 #### `require`
@@ -239,9 +345,9 @@ Modules that are required for your style guide. Useful for third-party styles or
 module.exports = {
   require: [
     'babel-polyfill',
-    path.join(__dirname, 'styleguide/styles.css'),
+    path.join(__dirname, 'styleguide/styles.css')
   ]
-};
+}
 ```
 
 > **Note:** This will add a separate webpack entry for each array item.
@@ -255,15 +361,12 @@ module.exports = {
       rules: [
         {
           test: /\.css$/,
-          use: [
-            'style-loader',
-            'css-loader'
-          ]
+          use: ['style-loader', 'css-loader']
         }
       ]
     }
   }
-};
+}
 ```
 
 See [Configuring webpack](Webpack.md) for mode details.
@@ -276,8 +379,24 @@ Function that allows you to override the mechanism used to identify classes/comp
 
 ```javascript
 module.exports = {
-  resolver: require('react-docgen').resolver.findAllComponentDefinitions
-};
+  resolver: require('react-docgen').resolver
+    .findAllComponentDefinitions
+}
+```
+
+#### `ribbon`
+
+Type: `Object`, optional
+
+Shows 'Fork Me' ribbon in the top-right corner. If `ribbon` key is present, then it's required to add `url` property; `text` property is optional. If you want to change styling of the ribbon, please, refer to the [theme section](#theme).
+
+```javascript
+module.exports = {
+  ribbon: {
+    url: 'http://example.com/',
+    text: 'Fork me on GitHub'
+  }
+}
 ```
 
 #### `sections`
@@ -332,14 +451,21 @@ Override React components used to render the style guide.
 
 ```javascript
 module.exports = {
-	styleguideComponents: {
-		Logo: path.join(__dirname, 'styleguide/components/Logo'),
-		StyleGuideRenderer: path.join(__dirname, 'styleguide/components/StyleGuide'),
-	},
-};
+  styleguideComponents: {
+    Wrapper: path.join(__dirname, 'styleguide/components/Wrapper'),
+    StyleGuideRenderer: path.join(
+      __dirname,
+      'styleguide/components/StyleGuide'
+    )
+  }
+}
 ```
 
 See an example of [customized style guide](https://github.com/styleguidist/react-styleguidist/tree/master/examples/customised).
+
+If you want to wrap, rather than replace a component, make sure to import the default implementation using the full path to `react-styleguidist`. See an example of [wrapping a Styleguidist component](https://github.com/styleguidist/react-styleguidist/tree/master/examples/customised/styleguide/components/Sections.js).
+
+**Note**: these components are not guaranteed to be safe from breaking changes in react-styleguidist updates.
 
 #### `styleguideDir`
 
@@ -357,9 +483,21 @@ See example in the [cookbook](Cookbook.md#how-to-change-styles-of-a-style-guide)
 
 #### `template`
 
-Type: `String`, default: [src/templates/index.html](https://github.com/styleguidist/react-styleguidist/blob/master/scripts/templates/index.html)
+Type: `Object` or `Function`, optional.
 
-HTML file to use as the template for the style guide. HTML webpack Plugin is used under the hood, see [their docs for details](https://github.com/jantimon/html-webpack-plugin/blob/master/docs/template-option.md).
+Change HTML for the style guide app.
+
+An object with options to add a favicon, meta tags, inline JavaScript or CSS, etc. See [@vxna/mini-html-webpack-template docs](https://www.npmjs.com/package/@vxna/mini-html-webpack-template).
+
+```javascript
+module.exports = {
+  template: {
+    favicon: 'https://assets-cdn.github.com/favicon.ico'
+  }
+}
+```
+
+A function that returns an HTML string, see [mini-html-webpack-plugin docs](https://github.com/styleguidist/mini-html-webpack-plugin#custom-templates).
 
 #### `theme`
 
@@ -375,6 +513,59 @@ Type: `String`, default: `<app name from package.json> Style Guide`
 
 Style guide title.
 
+#### `sortProps`
+
+Type: `Function`, optional
+
+Function that sorts component props. By default props are sorted such that required props come first, optional props come second. Props in both groups are sorted by their property names.
+
+To disable sorting, use the identity function:
+
+```javascript
+module.exports = {
+  sortProps: props => props
+}
+```
+
+#### `updateDocs`
+
+Type: `Function`, optional
+
+Function that modifies props, methods, and metadata after parsing a source file. For example, load a component version from a JSON file:
+
+```javascript
+module.exports = {
+  updateDocs(docs) {
+    if (docs.doclets.version) {
+      const versionFilePath = path.resolve(
+        path.dirname(file),
+        docs.doclets.version
+      )
+      const version = require(versionFilePath).version
+
+      docs.doclets.version = version
+      docs.tags.version[0].description = version
+    }
+
+    return docs
+  }
+}
+```
+
+With this component JSDoc comment block:
+
+```javascript
+/**
+ * Component is described here.
+ *
+ * @version ./package.json
+ */
+export default class Button extends React.Component {
+  // ...
+}
+export default
+```
+
 #### `updateExample`
 
 Type: `Function`, optional
@@ -383,20 +574,20 @@ Function that modifies code example (Markdown fenced code block). For example yo
 
 ```javascript
 module.exports = {
-  updateExample: function(props, exampleFilePath) {
-    const { settings, lang } = props;
+  updateExample(props, exampleFilePath) {
+    const { settings, lang } = props
     if (typeof settings.file === 'string') {
-      const filepath = path.resolve(exampleFilePath, settings.file);
-      delete settings.file;
+      const filepath = path.resolve(exampleFilePath, settings.file)
+      delete settings.file
       return {
         content: fs.readFileSync(filepath),
         settings,
-        lang,
+        lang
       }
     }
-    return props;
+    return props
   }
-};
+}
 ```
 
 Use it like this in your Markdown files:
@@ -408,14 +599,14 @@ You can also use this function to dynamically update some of your fenced code bl
 
 ```javascript
 module.exports = {
-  updateExample: function(props) {
-    const { settings, lang } = props;
+  updateExample(props) {
+    const { settings, lang } = props
     if (lang === 'javascript' || lang === 'js' || lang === 'jsx') {
-      settings.static = true;
+      settings.static = true
     }
-    return props;
+    return props
   }
-};
+}
 ```
 
 #### `verbose`
@@ -442,12 +633,16 @@ module.exports = {
       rules: [
         {
           test: /\.scss$/,
-          loaders: ['style-loader', 'css-loader', 'sass-loader?precision=10']
+          loaders: [
+            'style-loader',
+            'css-loader',
+            'sass-loader?precision=10'
+          ]
         }
       ]
     }
   }
-};
+}
 ```
 
 Or a function:
@@ -456,21 +651,21 @@ Or a function:
 module.exports = {
   webpackConfig(env) {
     if (env === 'development') {
-        return {
-            // custom options
-        };
+      return {
+        // custom options
+      }
     }
-    return {};
+    return {}
   }
-};
+}
 ```
 
 > **Warning:** This option disables config load from `webpack.config.js`, load your config [manually](Webpack.md#reusing-your-projects-webpack-config).
 
 > **Note:** `entry`, `externals`, `output`, `watch`, and `stats` options will be ignored. For production builds, `devtool` will also be ignored.
 
-> **Note:** `CommonsChunkPlugins`, `HtmlWebpackPlugin`, `UglifyJsPlugin`, `HotModuleReplacementPlugin` plugins will be ignored because Styleguidist already includes them or they may break Styleguidist.
+> **Note:** `CommonsChunkPlugins`, `HtmlWebpackPlugin`, `MiniHtmlWebpackPlugin`, `UglifyJsPlugin`, `HotModuleReplacementPlugin` plugins will be ignored because Styleguidist already includes them or they may break Styleguidist.
 
-> **Note:** Run style guide in verbose mode to see the actual webpack config used by Styleguidist: `npm run styleguide -- --verbose`.
+> **Note:** Run style guide in verbose mode to see the actual webpack config used by Styleguidist: `npx styleguidist server --verbose`.
 
 See [Configuring webpack](Webpack.md) for examples.

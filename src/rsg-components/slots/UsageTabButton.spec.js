@@ -7,7 +7,7 @@ const props = {
 };
 
 it('should renderer a button', () => {
-	const actual = shallow(<UsageTabButton {...props} props={{ props: { foo: {} } }} />);
+	const actual = shallow(<UsageTabButton {...props} props={{ props: [{ name: 'foo' }] }} />);
 
 	expect(actual).toMatchSnapshot();
 });
@@ -15,5 +15,5 @@ it('should renderer a button', () => {
 it('should renderer null if there are not props or methods', () => {
 	const actual = shallow(<UsageTabButton {...props} props={{}} />);
 
-	expect(actual.node).toBeFalsy();
+	expect(actual.getElement()).toBeFalsy();
 });

@@ -1,15 +1,4 @@
-'use strict';
-
 const b = require('ast-types').builders;
-
-class RequireStatement {
-	constructor(filepath) {
-		this.filepath = filepath;
-	}
-	toAST() {
-		return b.callExpression(b.identifier('require'), [b.literal(this.filepath)]);
-	}
-}
 
 /**
  * Return a require() statement AST.
@@ -18,5 +7,12 @@ class RequireStatement {
  * @returns {object}
  */
 module.exports = function requireIt(filepath) {
-	return new RequireStatement(filepath);
+	const obj = { require: filepath };
+	Object.defineProperty(obj, 'toAST', {
+		enumerable: false,
+		value() {
+			return b.callExpression(b.identifier('require'), [b.literal(filepath)]);
+		},
+	});
+	return obj;
 };

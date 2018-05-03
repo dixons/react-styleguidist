@@ -2,7 +2,7 @@
 
 ## 1. Install Styleguidist
 
-Install webpack if you don’t have it already and not using Create React App:
+Install webpack if you don’t have it already and aren't using Create React App:
 
 ```bash
 npm install --save-dev webpack
@@ -18,28 +18,15 @@ npm install --save-dev react-styleguidist
 
 **If you’re using [Create React App](https://github.com/facebookincubator/create-react-app) you can skip this step.**
 
-[Point Styleguidist to your React components](Components.md) and [tell how to load your code](Webpack.md).
+[Point Styleguidist to your React components](Components.md) and [tell it how to load your code](Webpack.md).
 
-## 3. Add npm scripts for convenience
+## 3. Start your style guide
 
-Add these scripts to your `package.json`:
+Run **`npx styleguidist server`** to start a style guide dev server.
 
-```diff
-{
-  "scripts": {
-+    "styleguide": "styleguidist server",
-+    "styleguide:build": "styleguidist build"
-  }
-}
-```
+Run **`npx styleguidist build`** to build a static version.
 
-## 4. Start your style guide
-
-Run **`npm run styleguide`** to start style a guide dev server.
-
-Run **`npm run styleguide:build`** to build a static version.
-
-## 5. Start documenting your components
+## 4. Start documenting your components
 
 See how to [document your components](Documenting.md)
 

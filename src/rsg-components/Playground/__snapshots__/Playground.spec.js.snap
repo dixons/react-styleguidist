@@ -29,7 +29,9 @@ exports[`renderer should render preview 1`] = `
       </div>
     </div>
   </div>
-  <div>
+  <div
+    className="tab"
+  >
     <div>
       tab body
     </div>
@@ -42,18 +44,27 @@ exports[`should render component renderer 1`] = `
   name="name"
   preview={
     <Preview
-      code="<button>OK</button>"
+      code=
+<button>
+  OK
+</button>
+
       evalInContext={[Function]}
     />
   }
   previewProps={Object {}}
   tabBody={
     <Slot
+      active={undefined}
       name="exampleTabs"
       onlyActive={true}
       props={
         Object {
-          "code": "<button>OK</button>",
+          "code": 
+<button>
+  OK
+</button>
+,
           "onChange": [Function],
         }
       }
@@ -61,6 +72,7 @@ exports[`should render component renderer 1`] = `
   }
   tabButtons={
     <Slot
+      active={undefined}
       name="exampleTabButtons"
       props={
         Object {
@@ -75,7 +87,7 @@ exports[`should render component renderer 1`] = `
       props={
         Object {
           "example": 0,
-          "isolated": undefined,
+          "isolated": false,
           "name": "name",
         }
       }

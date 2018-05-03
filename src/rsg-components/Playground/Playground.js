@@ -6,6 +6,7 @@ import Para from 'rsg-components/Para';
 import Slot from 'rsg-components/Slot';
 import PlaygroundRenderer from 'rsg-components/Playground/PlaygroundRenderer';
 import { EXAMPLE_TAB_CODE_EDITOR } from '../slots';
+import { DisplayModes } from '../../consts';
 
 export default class Playground extends Component {
 	static propTypes = {
@@ -18,7 +19,7 @@ export default class Playground extends Component {
 
 	static contextTypes = {
 		config: PropTypes.object.isRequired,
-		isolatedExample: PropTypes.bool,
+		displayMode: PropTypes.string,
 	};
 
 	constructor(props, context) {
@@ -43,10 +44,6 @@ export default class Playground extends Component {
 		});
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		return nextState.code !== this.state.code || nextState.activeTab !== this.state.activeTab;
-	}
-
 	componentWillUnmount() {
 		// Clear pending changes
 		this.handleChange.cancel();
@@ -67,7 +64,7 @@ export default class Playground extends Component {
 	render() {
 		const { code, activeTab } = this.state;
 		const { evalInContext, index, name, settings } = this.props;
-		const { isolatedExample } = this.context;
+		const { displayMode } = this.context;
 		const preview = <Preview code={code} evalInContext={evalInContext} />;
 		if (settings.noeditor) {
 			return <Para>{preview}</Para>;
@@ -93,7 +90,10 @@ export default class Playground extends Component {
 					/>
 				}
 				toolbar={
-					<Slot name="exampleToolbar" props={{ name, isolated: isolatedExample, example: index }} />
+					<Slot
+						name="exampleToolbar"
+						props={{ name, isolated: displayMode === DisplayModes.example, example: index }}
+					/>
 				}
 			/>
 		);

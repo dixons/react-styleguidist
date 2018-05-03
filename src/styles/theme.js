@@ -11,18 +11,19 @@ export const space = [
 
 export const color = {
 	base: '#333',
-	light: '#999',
+	light: '#767676',
 	lightest: '#ccc',
 	link: '#1978c8',
 	linkHover: '#f28a25',
 	border: '#e8e8e8',
 	name: '#7f9a44',
 	type: '#b77daa',
-	error: '#fff',
+	error: '#c00',
 	baseBackground: '#fff',
-	errorBackground: '#c00',
 	codeBackground: '#f5f5f5',
 	sidebarBackground: '#f5f5f5',
+	ribbonBackground: '#f9970d',
+	ribbonText: '#fff',
 };
 
 export const fontFamily = {
@@ -61,3 +62,5 @@ export const mq = {
 export const borderRadius = 3;
 export const maxWidth = 1000;
 export const sidebarWidth = 200;
+
+export const buttonTextTransform = 'uppercase';

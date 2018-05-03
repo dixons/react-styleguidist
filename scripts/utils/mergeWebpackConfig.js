@@ -1,5 +1,3 @@
-'use strict';
-
 const isFunction = require('lodash/isFunction');
 const omit = require('lodash/omit');
 const mergeBase = require('webpack-merge');
@@ -14,6 +12,7 @@ const IGNORE_SECTIONS_ENV = {
 
 const IGNORE_PLUGINS = [
 	'CommonsChunkPlugins',
+	'MiniHtmlWebpackPlugin',
 	'HtmlWebpackPlugin',
 	'OccurrenceOrderPlugin',
 	'DedupePlugin',

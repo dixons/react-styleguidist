@@ -1,5 +1,3 @@
-'use strict';
-
 const fs = require('fs');
 const path = require('path');
 const isDirectory = require('is-directory');
@@ -13,12 +11,10 @@ const map = require('lodash/map');
 const listify = require('listify');
 const chalk = require('chalk');
 const leven = require('leven');
-const prettyFormat = require('pretty-format');
+const stringify = require('q-i').stringify;
 const typeDetect = require('type-detect');
 const logger = require('glogg')('rsg');
 const StyleguidistError = require('./error');
-
-const format = value => prettyFormat(value, { min: true });
 
 const typeCheckers = {
 	number: isFinite,
@@ -61,7 +57,8 @@ module.exports = function sanitizeConfig(config, schema, rootDir) {
 			}, null);
 
 			throw new StyleguidistError(
-				`Unknown config option ${chalk.bold(key)} with value "${format(value)}" was found.` +
+				`Unknown config option ${chalk.bold(key)} was found, the value is:\n` +
+					stringify(value) +
 					(suggestion ? `\n\nDid you mean ${chalk.bold(suggestion)}?` : '')
 			);
 		}
@@ -87,10 +84,10 @@ module.exports = function sanitizeConfig(config, schema, rootDir) {
 				const message = isString(isRequired)
 					? isRequired
 					: `${chalk.bold(key)} config option is required.`;
-				throw new StyleguidistError(message);
+				throw new StyleguidistError(message, key);
 			}
 		} else if (props.deprecated) {
-			logger.warn(`${chalk.bold(key)} config option is deprecated. ${props.deprecated}`);
+			logger.warn(`${key} config option is deprecated. ${props.deprecated}`);
 		} else if (props.removed) {
 			throw new StyleguidistError(`${chalk.bold(key)} config option was removed. ${props.removed}`);
 		}
@@ -107,6 +104,10 @@ module.exports = function sanitizeConfig(config, schema, rootDir) {
 			});
 			if (!hasRightType) {
 				const exampleValue = props.example || props.default;
+				const example = {};
+				if (exampleValue) {
+					example[key] = exampleValue;
+				}
 				throw new StyleguidistError(
 					`${chalk.bold(key)} config option should be ${typesList(types)}, received ${typeDetect(
 						value
@@ -115,10 +116,9 @@ module.exports = function sanitizeConfig(config, schema, rootDir) {
 							? `
 Example:
 
-{
-  ${key}: ${isFunction(exampleValue) ? exampleValue.toString() : format(exampleValue)}
-}`
-							: '')
+${stringify(example)}`
+							: '',
+						key)
 				);
 			}
 
@@ -130,12 +130,14 @@ Example:
 				if (shouldExist(types)) {
 					if (shouldBeFile(types) && !fs.existsSync(value)) {
 						throw new StyleguidistError(
-							`A file specified in ${chalk.bold(key)} config option does not exist:\n${value}`
+							`A file specified in ${chalk.bold(key)} config option does not exist:\n${value}`,
+							key
 						);
 					}
 					if (shouldBeDirectory(types) && !isDirectory.sync(value)) {
 						throw new StyleguidistError(
-							`A directory specified in ${chalk.bold(key)} config option does not exist:\n${value}`
+							`A directory specified in ${chalk.bold(key)} config option does not exist:\n${value}`,
+							key
 						);
 					}
 				}

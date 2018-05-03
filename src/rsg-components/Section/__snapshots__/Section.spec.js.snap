@@ -2,7 +2,7 @@
 
 exports[`render should not render title if name is not set 1`] = `<section />`;
 
-exports[`render should render component 1`] = `
+exports[`render should render section 1`] = `
 <section>
   <SectionHeading
     depth={3}
@@ -14,29 +14,33 @@ exports[`render should render component 1`] = `
         "components": <Components
           components={Array []}
           depth={3}
-      />,
+        />,
         "content": <Examples
           examples={
-              Array [
-                  Object {
-                    "content": "<button>OK</button>",
-                    "evalInContext": [Function],
-                    "type": "code",
-                  },
-                  Object {
-                    "content": "Hello *world*!",
-                    "type": "markdown",
-                  },
-                ]
+            Array [
+              Object {
+                "content": 
+<button>
+  OK
+</button>
+,
+                "evalInContext": [Function],
+                "type": "code",
+              },
+              Object {
+                "content": "Hello *world*!",
+                "type": "markdown",
+              },
+            ]
           }
           name="Foo"
-      />,
+        />,
         "depth": 3,
         "name": "Foo",
         "sections": <Sections
           depth={3}
           sections={Array []}
-      />,
+        />,
         "slug": "foo",
       }
     }
@@ -47,7 +51,11 @@ exports[`render should render component 1`] = `
     examples={
       Array [
         Object {
-          "content": "<button>OK</button>",
+          "content": 
+<button>
+  OK
+</button>
+,
           "evalInContext": [Function],
           "type": "code",
         },
@@ -59,13 +67,13 @@ exports[`render should render component 1`] = `
     }
     name="Foo"
   />
-  <Components
-    components={Array []}
-    depth={3}
-  />
   <Sections
     depth={3}
     sections={Array []}
+  />
+  <Components
+    components={Array []}
+    depth={3}
   />
 </section>
 `;
@@ -108,7 +116,22 @@ exports[`should not render sections if not defined 1`] = `
 />
 `;
 
-exports[`should render component renderer 1`] = `
+exports[`should render components list 1`] = `
+<Styled(Section)
+  components={
+    <Components
+      components={Array []}
+      depth={4}
+    />
+  }
+  depth={3}
+  isolated={false}
+  name="Components"
+  slug="components"
+/>
+`;
+
+exports[`should render section renderer 1`] = `
 <Styled(Section)
   components={
     <Components
@@ -121,7 +144,11 @@ exports[`should render component renderer 1`] = `
       examples={
         Array [
           Object {
-            "content": "<button>OK</button>",
+            "content": 
+<button>
+  OK
+</button>
+,
             "evalInContext": [Function],
             "type": "code",
           },
@@ -135,6 +162,7 @@ exports[`should render component renderer 1`] = `
     />
   }
   depth={3}
+  description="This is a description"
   isolated={false}
   name="Foo"
   sections={
@@ -144,21 +172,6 @@ exports[`should render component renderer 1`] = `
     />
   }
   slug="foo"
-/>
-`;
-
-exports[`should render components list 1`] = `
-<Styled(Section)
-  components={
-    <Components
-      components={Array []}
-      depth={4}
-    />
-  }
-  depth={3}
-  isolated={false}
-  name="Components"
-  slug="components"
 />
 `;
 

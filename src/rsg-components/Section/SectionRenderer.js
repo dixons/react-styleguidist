@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Styled from 'rsg-components/Styled';
 import SectionHeading from 'rsg-components/SectionHeading';
+import Markdown from 'rsg-components/Markdown';
 
 const styles = ({ space }) => ({
 	root: {
@@ -10,7 +11,8 @@ const styles = ({ space }) => ({
 });
 
 export function SectionRenderer(allProps) {
-	const { classes, name, slug, content, components, sections, depth } = allProps;
+	const { classes, name, slug, content, components, sections, depth, description } = allProps;
+
 	return (
 		<section className={classes.root}>
 			{name && (
@@ -18,9 +20,10 @@ export function SectionRenderer(allProps) {
 					{name}
 				</SectionHeading>
 			)}
+			{description && <Markdown text={description} />}
 			{content}
-			{components}
 			{sections}
+			{components}
 		</section>
 	);
 }
@@ -28,7 +31,9 @@ export function SectionRenderer(allProps) {
 SectionRenderer.propTypes = {
 	classes: PropTypes.object.isRequired,
 	name: PropTypes.string,
+	description: PropTypes.string,
 	slug: PropTypes.string,
+	filepath: PropTypes.string,
 	content: PropTypes.node,
 	components: PropTypes.node,
 	sections: PropTypes.node,

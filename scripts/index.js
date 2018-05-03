@@ -1,5 +1,3 @@
-'use strict';
-
 // Make sure user has webpack installed
 require('./utils/ensureWebpack');
 
@@ -16,8 +14,10 @@ const setupLogger = require('./logger');
  * @returns {object} API.
  */
 module.exports = function(config) {
-	config = getConfig(config);
-	setupLogger(config.logger, config.verbose, {});
+	config = getConfig(config, config => {
+		setupLogger(config.logger, config.verbose, {});
+		return config;
+	});
 
 	return {
 		/**
@@ -34,7 +34,8 @@ module.exports = function(config) {
 		 * Start style guide dev server.
 		 *
 		 * @param {Function} callback callback(err, config).
-		 * @return {Compiler} Webpack Compiler instance.
+		 * @return {ServerInfo.App} Webpack-Dev-Server.
+		 * @return {ServerInfo.Compiler} Webpack Compiler instance.
 		 */
 		server(callback) {
 			return server(config, err => callback(err, config));

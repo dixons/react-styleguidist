@@ -1,10 +1,8 @@
-'use strict';
-
 const fs = require('fs');
 const path = require('path');
 const findup = require('findup');
 const isString = require('lodash/isString');
-const merge = require('lodash/merge');
+const isPlainObject = require('lodash/isPlainObject');
 const StyleguidistError = require('./utils/error');
 const sanitizeConfig = require('./utils/sanitizeConfig');
 const schema = require('./schemas/config');
@@ -15,11 +13,10 @@ const CONFIG_FILENAME = 'styleguide.config.js';
  * Read, parse and validate config file or passed config.
  *
  * @param {object|string} [config] All config options or config file name or nothing.
+ * @param {function} [update] Change config object before running validation on it.
  * @returns {object}
  */
-function getConfig(config) {
-	config = config || {};
-
+function getConfig(config, update) {
 	let configFilepath;
 	if (isString(config)) {
 		// Load config from a given file
@@ -28,36 +25,35 @@ function getConfig(config) {
 			throw new StyleguidistError('Styleguidist config not found: ' + configFilepath + '.');
 		}
 		config = {};
-	} else {
+	} else if (!isPlainObject(config)) {
 		// Try to read config options from a file
 		configFilepath = findConfigFile();
+		config = {};
 	}
 
 	if (configFilepath) {
 		config = require(configFilepath);
 	}
 
+	if (update) {
+		config = update(config);
+	}
+
 	const configDir = configFilepath ? path.dirname(configFilepath) : process.cwd();
 
-	let sanitizedConfig;
 	try {
-		sanitizedConfig = sanitizeConfig(config, schema, configDir);
+		return sanitizeConfig(config, schema, configDir);
 	} catch (exception) {
 		if (exception instanceof StyleguidistError) {
 			throw new StyleguidistError(
 				'Something is wrong with your style guide config',
-				exception.message
+				exception.message,
+				exception.extra
 			);
 		} else {
 			throw exception;
 		}
 	}
-
-	const mergedConfig = merge({}, sanitizedConfig, {
-		configDir,
-	});
-
-	return mergedConfig;
 }
 
 /**

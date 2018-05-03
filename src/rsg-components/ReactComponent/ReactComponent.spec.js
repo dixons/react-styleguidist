@@ -2,12 +2,14 @@ import React from 'react';
 import slots, { DOCS_TAB_USAGE } from '../slots';
 import ReactComponent from './ReactComponent';
 import { ReactComponentRenderer } from './ReactComponentRenderer';
+import { DisplayModes } from '../../consts';
 
 const options = {
 	context: {
 		config: {
 			showUsage: false,
 		},
+		displayMode: DisplayModes.all,
 		slots,
 	},
 	metadata: {},
@@ -120,7 +122,7 @@ describe('ReactComponent', () => {
 			options
 		);
 
-		expect(actual.node).toBe(null);
+		expect(actual.getElement()).toBe(null);
 	});
 
 	test('should not render component in isolation mode by default', () => {
@@ -133,7 +135,7 @@ describe('ReactComponent', () => {
 		const actual = shallow(<ReactComponent component={component} depth={3} />, {
 			context: {
 				...options.context,
-				isolatedComponent: true,
+				displayMode: DisplayModes.component,
 			},
 		});
 

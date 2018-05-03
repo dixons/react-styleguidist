@@ -5,11 +5,13 @@ exports[`renderer should render table of contents 1`] = `
   <div>
     <div>
       <input
+        aria-label="Filter by name"
         onChange={[Function]}
         placeholder="Filter by name"
         value="foo"
       />
     </div>
+    <nav />
   </div>
 </div>
 `;
@@ -19,7 +21,7 @@ exports[`should filter list when search field contains a query 1`] = `
   onSearchTermChange={[Function]}
   searchTerm=""
 >
-  <Styled(ComponentsList)
+  <ComponentsList
     items={
       Array [
         Object {
@@ -48,6 +50,7 @@ exports[`should filter list when search field contains a query 1`] = `
         },
       ]
     }
+    useIsolatedLinks={false}
   />
 </Styled(TableOfContents)>
 `;
@@ -57,7 +60,7 @@ exports[`should filter list when search field contains a query 2`] = `
   onSearchTermChange={[Function]}
   searchTerm="but"
 >
-  <Styled(ComponentsList)
+  <ComponentsList
     items={
       Array [
         Object {
@@ -70,6 +73,7 @@ exports[`should filter list when search field contains a query 2`] = `
         },
       ]
     }
+    useIsolatedLinks={false}
   />
 </Styled(TableOfContents)>
 `;
@@ -79,7 +83,7 @@ exports[`should filter section names 1`] = `
   onSearchTermChange={[Function]}
   searchTerm=""
 >
-  <Styled(ComponentsList)
+  <ComponentsList
     items={
       Array [
         Object {
@@ -97,18 +101,19 @@ exports[`should filter section names 1`] = `
               "slug": "button",
             },
           ],
-          "content": <Styled(ComponentsList)
+          "content": <ComponentsList
             items={
-                  Array [
-                        Object {
-                          "content": false,
-                          "heading": false,
-                          "name": "Button",
-                          "slug": "button",
-                        },
-                      ]
+              Array [
+                Object {
+                  "content": false,
+                  "heading": false,
+                  "name": "Button",
+                  "slug": "button",
+                },
+              ]
             }
-      />,
+            useIsolatedLinks={false}
+          />,
           "heading": true,
           "name": "Buttons",
           "sections": Array [],
@@ -125,24 +130,25 @@ exports[`should filter section names 1`] = `
               "slug": "textarea",
             },
           ],
-          "content": <Styled(ComponentsList)
+          "content": <ComponentsList
             items={
-                  Array [
-                        Object {
-                          "content": false,
-                          "heading": false,
-                          "name": "Input",
-                          "slug": "input",
-                        },
-                        Object {
-                          "content": false,
-                          "heading": false,
-                          "name": "Textarea",
-                          "slug": "textarea",
-                        },
-                      ]
+              Array [
+                Object {
+                  "content": false,
+                  "heading": false,
+                  "name": "Input",
+                  "slug": "input",
+                },
+                Object {
+                  "content": false,
+                  "heading": false,
+                  "name": "Textarea",
+                  "slug": "textarea",
+                },
+              ]
             }
-      />,
+            useIsolatedLinks={false}
+          />,
           "heading": true,
           "name": "Forms",
           "sections": Array [],
@@ -150,6 +156,7 @@ exports[`should filter section names 1`] = `
         },
       ]
     }
+    useIsolatedLinks={false}
   />
 </Styled(TableOfContents)>
 `;
@@ -159,7 +166,7 @@ exports[`should filter section names 2`] = `
   onSearchTermChange={[Function]}
   searchTerm="frm"
 >
-  <Styled(ComponentsList)
+  <ComponentsList
     items={
       Array [
         Object {
@@ -172,6 +179,7 @@ exports[`should filter section names 2`] = `
         },
       ]
     }
+    useIsolatedLinks={false}
   />
 </Styled(TableOfContents)>
 `;
@@ -181,7 +189,7 @@ exports[`should render a renderer 1`] = `
   onSearchTermChange={[Function]}
   searchTerm=""
 >
-  <Styled(ComponentsList)
+  <ComponentsList
     items={
       Array [
         Object {
@@ -210,6 +218,7 @@ exports[`should render a renderer 1`] = `
         },
       ]
     }
+    useIsolatedLinks={false}
   />
 </Styled(TableOfContents)>
 `;
@@ -219,7 +228,7 @@ exports[`should render renderer with sections with nested components 1`] = `
   onSearchTermChange={[Function]}
   searchTerm=""
 >
-  <Styled(ComponentsList)
+  <ComponentsList
     items={
       Array [
         Object {
@@ -237,18 +246,19 @@ exports[`should render renderer with sections with nested components 1`] = `
               "slug": "button",
             },
           ],
-          "content": <Styled(ComponentsList)
+          "content": <ComponentsList
             items={
-                  Array [
-                        Object {
-                          "content": false,
-                          "heading": false,
-                          "name": "Button",
-                          "slug": "button",
-                        },
-                      ]
+              Array [
+                Object {
+                  "content": false,
+                  "heading": false,
+                  "name": "Button",
+                  "slug": "button",
+                },
+              ]
             }
-      />,
+            useIsolatedLinks={false}
+          />,
           "heading": true,
           "name": "Buttons",
           "sections": Array [],
@@ -265,24 +275,25 @@ exports[`should render renderer with sections with nested components 1`] = `
               "slug": "textarea",
             },
           ],
-          "content": <Styled(ComponentsList)
+          "content": <ComponentsList
             items={
-                  Array [
-                        Object {
-                          "content": false,
-                          "heading": false,
-                          "name": "Input",
-                          "slug": "input",
-                        },
-                        Object {
-                          "content": false,
-                          "heading": false,
-                          "name": "Textarea",
-                          "slug": "textarea",
-                        },
-                      ]
+              Array [
+                Object {
+                  "content": false,
+                  "heading": false,
+                  "name": "Input",
+                  "slug": "input",
+                },
+                Object {
+                  "content": false,
+                  "heading": false,
+                  "name": "Textarea",
+                  "slug": "textarea",
+                },
+              ]
             }
-      />,
+            useIsolatedLinks={false}
+          />,
           "heading": true,
           "name": "Forms",
           "sections": Array [],
@@ -290,6 +301,7 @@ exports[`should render renderer with sections with nested components 1`] = `
         },
       ]
     }
+    useIsolatedLinks={false}
   />
 </Styled(TableOfContents)>
 `;
